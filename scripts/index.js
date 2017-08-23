@@ -19,7 +19,7 @@ function member(){
 
 module.exports = (robot) => {
 
-    let ch = "#test_1"
+    let ch = "#代々木CPチャイムbot"
 
     var send = function (channel, msg) {
         return robot.send({
