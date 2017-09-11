@@ -19,7 +19,7 @@ function member(){
 
 module.exports = (robot) => {
 
-    let ch = "#test_1"
+    let ch = "#代々木CPチャイムbot"
 
     var send = function (channel, msg) {
         return robot.send({
@@ -38,8 +38,11 @@ module.exports = (robot) => {
         for(let i=0;i<7;i++){
             if(msgtemp === week[i]){
                 temp[i]+=",@"+msg.message.user.name;
-                send(ch,msg.message.user.name+"登録しました。");
-        
+                send(ch,"@"+msg.message.user.name+" 登録しました。");
+            }
+            if(msgtemp==="week"&&0<i&&i<6){
+                temp[i]+=",@"+msg.message.user.name;
+                send(ch,"@"+msg.message.user.name+" 登録しました。");
             }
         }
         let tmp = ""
@@ -48,6 +51,7 @@ module.exports = (robot) => {
         };
         fs.writeFileSync(directory + 'schoolmember.txt',tmp,'utf8');
     });
+
 
     robot.hear(/remove/i,(msg)=>{
         let temp = fs.readFileSync(directory + "schoolmember.txt", 'utf8');
@@ -62,7 +66,17 @@ module.exports = (robot) => {
                 for(let i=0;i<tmp.length;i++){
                     if("@"+msg.message.user.name===tmp[i]){
                         tmp.splice(i,1);
-                        send(ch,msg.message.user.name+"削除しました。");
+                        send(ch,"@"+msg.message.user.name+" 削除しました。");
+                    }
+                }
+                temp[i]=tmp;
+            }
+            if(msgtemp === "all"){
+                let tmp=temp[i].split(",");
+                for(let i=0;i<tmp.length;i++){
+                    if("@"+msg.message.user.name===tmp[i]){
+                        tmp.splice(i,1);
+                        send(ch,"@"+msg.message.user.name+" 削除しました。");
                     }
                 }
                 temp[i]=tmp;
@@ -75,7 +89,19 @@ module.exports = (robot) => {
         fs.writeFileSync(directory + 'schoolmember.txt',tmp,'utf8');
     });
 
-
+    robot.hear(/check/i,(msg)=>{
+        let temp = fs.readFileSync(directory + "schoolmember.txt", 'utf8');
+        temp = temp.split("\r\n");
+        let sendtemp ="登録メンバー一覧"
+        let week = ["sun","mon","tue","wed","thu","fri","sat"];
+        for(let i=0;i<7;i++){
+            sendtemp += "\r\n"+week[i]+" "
+                let tmp = temp[i].split(",@");
+                sendtemp += tmp.join(",")
+                }
+                let sendtmp = sendtemp
+        send(ch,sendtmp)
+    })
 /*
     new cron('* * * * * *', function () {
         return send(ch, member() + "テスト");
