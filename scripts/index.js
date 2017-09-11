@@ -38,16 +38,20 @@ module.exports = (robot) => {
         for(let i=0;i<7;i++){
             if(msgtemp === week[i]){
                 temp[i]+=",@"+msg.message.user.name;
-                send(ch,msg.message.user.name+"登録しました。");
         
             }
+            if(msgtemp==="week"&&0<i&&i<6){
+                temp[i]+=",@"+msg.message.user.name;
+            }
         }
+        send("@"+ch,msg.message.user.name+" 登録しました。");
         let tmp = ""
         for(let i=0;i<7;i++){
             tmp+=temp[i]+"\r\n";
         };
         fs.writeFileSync(directory + 'schoolmember.txt',tmp,'utf8');
     });
+
 
     robot.hear(/remove/i,(msg)=>{
         let temp = fs.readFileSync(directory + "schoolmember.txt", 'utf8');
@@ -62,7 +66,7 @@ module.exports = (robot) => {
                 for(let i=0;i<tmp.length;i++){
                     if("@"+msg.message.user.name===tmp[i]){
                         tmp.splice(i,1);
-                        send(ch,msg.message.user.name+"削除しました。");
+                        send("@"+ch,msg.message.user.name+" 削除しました。");
                     }
                 }
                 temp[i]=tmp;
