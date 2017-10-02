@@ -146,6 +146,6 @@ module.exports = (robot) => {
         return send(ch, member() + "6限開始時刻です。");
     }).start();
     new cron('0 40 15 * * *', function () {
-        return send(ch, member() + "本日の授業はすべて終了です。\r\n使い方\r\n https://rinkeisgithub.github.io/n-highschool_timetable_hubot/readme/index.html");
+        return send(ch, member() + "本日の授業はすべて終了です。\r\n使い方\r\n https://rinkei-krt6006.github.io/n-highschool_timetable_hubot/");
     }).start();
 };
